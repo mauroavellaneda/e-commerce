@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import useStyles from "./styles";
 
-const CartItem = ({ item }) => {
+const CartItem = ({ item, onRemoveFromCart, onUpdateCartQuantity }) => {
   const classes = useStyles();
   return (
     <Card>
@@ -26,11 +26,19 @@ const CartItem = ({ item }) => {
       </CardContent>
       <CardActions className={classes.cardActions}>
         <div className={classes.buttons}>
-          <Button type="button" size="small">
+          <Button
+            type="button"
+            size="small"
+            onClick={() => onUpdateCartQuantity(item.id, item.quantity - 1)}
+          >
             -
           </Button>
           <Typography>{item.quantity}</Typography>
-          <Button type="button" size="small">
+          <Button
+            type="button"
+            size="small"
+            onClick={() => onUpdateCartQuantity(item.id, item.quantity + 1)}
+          >
             +
           </Button>
         </div>
