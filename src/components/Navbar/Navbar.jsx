@@ -9,9 +9,13 @@ import {
 import { ShoppingCart } from "@material-ui/icons";
 import logo from "../../assets/e-commerce.jpg";
 import useStyles from "./styles";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = ({ totalItems }) => {
   const classes = useStyles();
+  const location = useLocation();
+
+  
   return (
     <>
       <AppBar
@@ -22,6 +26,8 @@ const Navbar = ({ totalItems }) => {
       >
         <Toolbar>
           <Typography
+            component={Link}
+            to="/"
             data-cy="title"
             variant="h6"
             className={classes.title}
@@ -36,8 +42,11 @@ const Navbar = ({ totalItems }) => {
             />
             E-commerce site
             <div className={classes.grow} />
+            {location.pathname === "/" && (
             <div className={classes.button}>
               <IconButton
+                component={Link}
+                to="/cart"
                 data-cy="cart-icon"
                 aria-label="Show cart items"
                 color="inherit"
@@ -47,6 +56,8 @@ const Navbar = ({ totalItems }) => {
                 </Badge>
               </IconButton>
             </div>
+
+            ) }
           </Typography>
         </Toolbar>
       </AppBar>
