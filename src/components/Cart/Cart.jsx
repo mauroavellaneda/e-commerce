@@ -12,15 +12,18 @@ const Cart = ({
 }) => {
   const classes = useStyles();
 
-  const EmptyCart = () => {
-    <Typography variant="subtitle">
+  const renderEmptyCart = () => {
+    <Typography variant="subtitle1">
       You don't have items in your shopping cart
-      <Link to="/" className={classes.link}>
+      <Link className={classes.link} to="/">
         Start adding some
       </Link>
     </Typography>;
   };
-  const FilledCart = () => {
+
+  if (!cart.line_items) return "Loading...";
+
+  const renderCart = () => {
     <>
       <Grid container spacing={3}>
         {cart.line_items.map((item) => (
@@ -64,14 +67,13 @@ const Cart = ({
     </>;
   };
 
-  if (!cart.line_items) return "Loading...";
   return (
     <Container>
       <div className={classes.toolbar} />
       <Typography className={classes.title} variant="h3" gutterBottom>
         Your Shopping Cart
       </Typography>
-      {!cart.line_items.length ? EmptyCart() : FilledCart()}
+      {!cart.line_items.length ? renderEmptyCart() : renderCart()}
     </Container>
   );
 };
