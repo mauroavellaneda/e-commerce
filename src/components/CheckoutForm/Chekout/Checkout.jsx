@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  CssBaseline,
   Paper,
   Stepper,
   Step,
@@ -59,7 +60,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     );
 
   return (
-    <AddressForm>
+    <>
+      <CssBaseline />
       <div className={classes.toolbar} />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
@@ -80,7 +82,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
           )}
         </Paper>
       </main>
-    </AddressForm>
+    </>
   );
 };
 

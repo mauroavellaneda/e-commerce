@@ -4,13 +4,10 @@ import useStyles from "./styles";
 import CartItem from "./CartItem/CartItem";
 import { Link } from "react-router-dom";
 
-const Cart = ({
-  cart,
-  handleUpdateQuantity,
-  handleRemoveFromCart,
-  handleEmptyCart,
-}) => {
+const Cart = ({ cart, onUpdateCartQty, onRemoveFromCart, onEmptyCart }) => {
   const classes = useStyles();
+
+  const handleEmptyCart = () => onEmptyCart();
 
   const renderEmptyCart = () => {
     <Typography variant="subtitle1">
@@ -23,15 +20,15 @@ const Cart = ({
 
   if (!cart.line_items) return "Loading...";
 
-  const renderCart = () => {
+  const renderCart = () => (
     <>
       <Grid container spacing={3}>
-        {cart.line_items.map((item) => (
-          <Grid item xs={12} sm={4} key={item.id}>
+        {cart.line_items.map((lineItem) => (
+          <Grid item xs={12} sm={4} key={lineItem.id}>
             <CartItem
-              item={item}
-              onRemoveFromCart={handleRemoveFromCart}
-              onUpdateCartQuantity={handleUpdateQuantity}
+              item={lineItem}
+              onUpdateCartQty={onUpdateCartQty}
+              onRemoveFromCart={onRemoveFromCart}
             />
           </Grid>
         ))}
@@ -49,23 +46,23 @@ const Cart = ({
             color="secondary"
             onClick={handleEmptyCart}
           >
-            Empty Cart
+            Empty cart
           </Button>
           <Button
-            className={classes.checkout}
+            className={classes.checkoutButton}
+            component={Link}
+            to="/checkout"
             size="large"
             type="button"
             variant="contained"
             color="primary"
-            component={Link}
-            to="/checkout"
           >
             Checkout
           </Button>
         </div>
       </div>
-    </>;
-  };
+    </>
+  );
 
   return (
     <Container>
