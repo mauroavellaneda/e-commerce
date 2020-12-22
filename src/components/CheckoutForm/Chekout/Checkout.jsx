@@ -10,7 +10,7 @@ import {
   Divider,
   Button,
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import useStyles from "./styles";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
@@ -22,6 +22,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
+  const [isFinished, setIsFinished] = useState(false);
+  const history = useHistory();
   const classes = useStyles();
 
   const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -35,7 +37,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         });
         setCheckoutToken(token);
       } catch (error) {
-        console.log(error);
+        history.pushState("/");
       }
     };
     generateToken();
@@ -45,6 +47,12 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     setShippingData(data);
 
     nextStep();
+  };
+
+  const timeout = () => {
+    setTimeout(() => {
+      setIsFinished(true);
+    }, 3000);
   };
 
   let Confirmation = () =>
@@ -70,12 +78,17 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         <CircularProgress />
       </div>
     );
+
   if (error) {
-    <>
-      <Typography variant="h5">Error: {error}</Typography>
-      <br />
-      <Typography variant="h5">Error: {error}</Typography>
-    </>;
+    Confirmation = () => (
+      <>
+        <Typography variant="h5">Error: {error}</Typography>
+        <br />
+        <Button component={Link} variant="outlined" type="button" to="/">
+          Back to home
+        </Button>
+      </>
+    );
   }
 
   const Form = () =>
@@ -88,6 +101,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep={nextStep}
         backStep={backStep}
         onCaptureCheckout={onCaptureCheckout}
+        timeout={timeout}
       />
     );
 
