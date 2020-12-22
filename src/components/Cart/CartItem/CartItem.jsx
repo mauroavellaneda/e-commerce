@@ -7,18 +7,19 @@ import {
   CardContent,
   CardMedia,
 } from "@material-ui/core";
+
 import useStyles from "./styles";
 
-const CartItem = ({ item, onRemoveFromCart, onUpdateCartQuantity }) => {
+const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
   const classes = useStyles();
 
-  const handleUpdateCartQuantity = (lineItemId, newQuantity) =>
-    onUpdateCartQuantity(lineItemId, newQuantity);
+  const handleUpdateCartQty = (lineItemId, newQuantity) =>
+    onUpdateCartQty(lineItemId, newQuantity);
 
   const handleRemoveFromCart = (lineItemId) => onRemoveFromCart(lineItemId);
 
   return (
-    <Card>
+    <Card className="cart-item">
       <CardMedia
         image={item.media.source}
         alt={item.name}
@@ -26,7 +27,7 @@ const CartItem = ({ item, onRemoveFromCart, onUpdateCartQuantity }) => {
       />
       <CardContent className={classes.cardContent}>
         <Typography variant="h4">{item.name}</Typography>
-        <Typography variant="h4">
+        <Typography variant="h5">
           {item.line_total.formatted_with_symbol}
         </Typography>
       </CardContent>
@@ -35,28 +36,25 @@ const CartItem = ({ item, onRemoveFromCart, onUpdateCartQuantity }) => {
           <Button
             type="button"
             size="small"
-            onClick={() => handleUpdateCartQuantity(item.id, item.quantity - 1)}
+            onClick={() => handleUpdateCartQty(item.id, item.quantity - 1)}
           >
             -
           </Button>
-          <Typography>{item.quantity}</Typography>
+          <Typography>&nbsp;{item.quantity}&nbsp;</Typography>
           <Button
             type="button"
             size="small"
-            onClick={() => handleUpdateCartQuantity(item.id, item.quantity + 1)}
+            onClick={() => handleUpdateCartQty(item.id, item.quantity + 1)}
           >
             +
           </Button>
-          <Button
-            variant="contained"
-            type="button"
-            color="secondary"
-            onClick={() => handleRemoveFromCart(item.id)}
-          >
-            Remove
-          </Button>
         </div>
-        <Button variant="contained" type="button" color="secondary">
+        <Button
+          variant="contained"
+          type="button"
+          color="secondary"
+          onClick={() => handleRemoveFromCart(item.id)}
+        >
           Remove
         </Button>
       </CardActions>

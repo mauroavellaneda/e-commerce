@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  CssBaseline,
   Paper,
   Stepper,
   Step,
@@ -16,7 +17,7 @@ import { commerce } from "../../../lib/commerce";
 
 const steps = ["Shipping address", "Payment details"];
 
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
@@ -49,11 +50,18 @@ const Checkout = ({ cart }) => {
     activeStep === 0 ? (
       <AddressForm checkoutToken={checkoutToken} next={next} />
     ) : (
-      <PaymentForm shippingData={shippingData} />
+      <PaymentForm
+        shippingData={shippingData}
+        checkoutToken={checkoutToken}
+        nextStep={nextStep}
+        backStep={backStep}
+        onCaptureCheckout={onCaptureCheckout}
+      />
     );
 
   return (
-    <AddressForm>
+    <>
+      <CssBaseline />
       <div className={classes.toolbar} />
       <main className={classes.layout}>
         <Paper className={classes.paper}>
@@ -74,7 +82,7 @@ const Checkout = ({ cart }) => {
           )}
         </Paper>
       </main>
-    </AddressForm>
+    </>
   );
 };
 
