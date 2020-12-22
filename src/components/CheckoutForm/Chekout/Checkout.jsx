@@ -10,6 +10,7 @@ import {
   Divider,
   Button,
 } from "@material-ui/core";
+import { Link, useHistory } from "react-router-dom";
 import useStyles from "./styles";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
@@ -21,6 +22,8 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
+  const [isFinished, setIsFinished] = useState(false);
+  const history = useHistory();
   const classes = useStyles();
 
   const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -33,7 +36,9 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
           type: "cart",
         });
         setCheckoutToken(token);
-      } catch (error) {}
+      } catch (error) {
+        history.pushState("/");
+      }
     };
     generateToken();
   }, [cart]);
@@ -44,7 +49,47 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
     nextStep();
   };
 
-  const Confirmation = () => <div>Confirmation</div>;
+  const timeout = () => {
+    setTimeout(() => {
+      setIsFinished(true);
+    }, 3000);
+  };
+
+  let Confirmation = () =>
+    order.customer ? (
+      <>
+        <div>
+          <Typography variant="h5">
+            Thank you for your purchase, {order.customer.firstname}{" "}
+            {order.customer.lastname}
+          </Typography>
+          <Divider className={classes.divider} />
+          <Typography variant="subtitle2">
+            Order ref: {order.customer_reference}
+          </Typography>
+        </div>
+        <br />
+        <Button component={Link} to="/" variant="outlined" type="button">
+          Back to home
+        </Button>
+      </>
+    ) : (
+      <div className={classes.spinner}>
+        <CircularProgress />
+      </div>
+    );
+
+  if (error) {
+    Confirmation = () => (
+      <>
+        <Typography variant="h5">Error: {error}</Typography>
+        <br />
+        <Button component={Link} variant="outlined" type="button" to="/">
+          Back to home
+        </Button>
+      </>
+    );
+  }
 
   const Form = () =>
     activeStep === 0 ? (
@@ -56,6 +101,7 @@ const Checkout = ({ cart, order, onCaptureCheckout, error }) => {
         nextStep={nextStep}
         backStep={backStep}
         onCaptureCheckout={onCaptureCheckout}
+        timeout={timeout}
       />
     );
 
