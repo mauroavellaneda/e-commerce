@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Go to website:
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/88387be5-02d5-46c9-b26f-4aad70671b88/deploy-status)](https://app.netlify.com/sites/your-commerce-site/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/88387be5-02d5-46c9-b26f-4aad70671b88/deploy-status)](https://your-commerce-site.netlify.app/)
 
 ## Available Scripts
 
